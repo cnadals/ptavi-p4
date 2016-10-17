@@ -8,7 +8,7 @@ import socketserver
 import sys
 
 # pido el puerto por parametro
-PORT = int(sys.argv[1])
+PORT = sys.argv[1]
 
 class EchoHandler(socketserver.DatagramRequestHandler):
     """
@@ -17,6 +17,8 @@ class EchoHandler(socketserver.DatagramRequestHandler):
 
     def handle(self):
         self.wfile.write(b"Hemos recibido tu peticion")
+        print('Introduzca la IP del cliente: ' + self.client_address[0])
+        print('Introduzca el PUERTO del cliente: ' + str(self.client_address[1]))
         for line in self.rfile:
             print("El cliente nos manda ", line.decode('utf-8'))
 
