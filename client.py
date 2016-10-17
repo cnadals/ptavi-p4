@@ -12,6 +12,8 @@ import socket
 server = sys.argv[1]
 port = int(sys.argv[2])
 metodo = sys.argv[3]
+if metodo != 'register':
+	sys.exit ("User error")
 
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
