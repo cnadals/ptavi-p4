@@ -7,9 +7,6 @@ Clase (y programa principal) para un servidor de eco en UDP simple
 import socketserver
 import sys
 
-# pido el puerto por parametro
-PORT = sys.argv[1]
-
 class EchoHandler(socketserver.DatagramRequestHandler):
     """
     Echo server class
@@ -23,7 +20,10 @@ class EchoHandler(socketserver.DatagramRequestHandler):
             print("El cliente nos manda ", line.decode('utf-8'))
 
 if __name__ == "__main__":
-    serv = socketserver.UDPServer(('', 5060), EchoHandler)
+
+    # pido el puerto por parametro
+    port = int(sys.argv[1])
+    serv = socketserver.UDPServer(('', port), EchoHandler)
     print("Lanzando servidor UDP de eco...")
     try:
         serv.serve_forever()
