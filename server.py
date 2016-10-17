@@ -16,9 +16,10 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         self.wfile.write(b"Hemos recibido tu peticion")
         print('IP del cliente: ' + self.client_address[0])
         print('PUERTO del cliente: ' + str(self.client_address[1]))
-        for line in self.rfile:
-            print("El cliente nos manda ", line.decode('utf-8'))
-
+#        if line.startswith('register'):
+#        for line in self.rfile:
+#            print("El cliente nos manda ", line.decode('utf-8'))
+#COMPROBAR SI LLEGA REGISTER Y EL @
 if __name__ == "__main__":
 
     # pido el puerto por parametro
