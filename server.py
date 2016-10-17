@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     # pido el puerto por parametro
     port = int(sys.argv[1])
-    serv = socketserver.UDPServer(('', port), EchoHandler)
+    serv = socketserver.UDPServer(('', port), SIPRegisterHandler)
     print("Lanzando servidor UDP de eco...")
     try:
         serv.serve_forever()
