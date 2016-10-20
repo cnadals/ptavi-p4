@@ -24,7 +24,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     if metodo == 'REGISTER':
     	line = metodo + 'Expires: ' + expires + '\r\n'
     print("Enviando:", line)
-    my_socket.send(b(line, 'utf-8') + b'\r\n')
+    my_socket.send(bytes(line, 'utf-8') + b'\r\n')
     data = my_socket.recv(1024)
     print('Recibido -- ', data.decode('utf-8'))
 
