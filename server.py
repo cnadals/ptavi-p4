@@ -11,15 +11,20 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     """
     Echo server class
     """
+    # creo mi diccionario
+    misdatos = {}
 
     def handle(self):
-        self.wfile.write(b"Hemos recibido tu peticion")
+        #imprimo IP y PUERTO por pantalla
         print('IP del cliente: ' + self.client_address[0])
         print('PUERTO del cliente: ' + str(self.client_address[1]))
-#        if line.startswith('register'):
-#        for line in self.rfile:
-#            print("El cliente nos manda ", line.decode('utf-8'))
-#COMPROBAR SI LLEGA REGISTER Y EL @
+        datos =self.rfile.read().decode('utf-8').split(' ')
+        #compruebo si es register. si es, mando OK
+        if datos[0] == 'REGISTER':
+            self.misdatos[datos[1]] = self.client_address
+            self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
+        print(self.misdatos)
+
 if __name__ == "__main__":
 
     # pido el puerto por parametro
