@@ -17,6 +17,8 @@ import socket
 # añado campo expires
 #expires = sys.argv[5]
 
+# Creo excepcion: si no esta bien escrito, como se hace.
+# Para ello, elimino los sys anteriores.
 if not len(sys.argv) == 6:
     sys.exit("Usage: client.py ip puerto register sip_address expires_value")
 _, server, port, metodo, line, expires = sys.argv
