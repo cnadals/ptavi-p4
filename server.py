@@ -19,7 +19,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         print('IP del cliente: ' + self.client_address[0])
         print('PUERTO del cliente: ' + str(self.client_address[1]))
         datos = self.rfile.read().decode('utf-8').split(' ')
-        print(datos[-1])
+        print('EXPIRA en ' + datos[-1] + ' segundos.')
         #compruebo si es register. si es, mando OK
         if datos[0] == 'REGISTER':
             self.misdatos[datos[1]] = self.client_address[0]
