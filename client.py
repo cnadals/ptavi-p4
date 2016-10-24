@@ -17,7 +17,8 @@ import socket
 # añado campo expires
 #expires = sys.argv[5]
 
-# Creo excepcion: si no esta bien escrito, como se hace.
+# Compruebo la longitud de los argumentos
+# Creo excepcion: si no esta bien escrito, cómo se hace.
 # Para ello, elimino los sys anteriores.
 if not len(sys.argv) == 6:
     sys.exit("Usage: client.py ip puerto register sip_address expires_value")
@@ -27,7 +28,7 @@ port = int(port)
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
     my_socket.connect((server, port))
-    #compruebo si es register, y doy su "nuevo valor"
+    # compruebo si es register, y doy su "nuevo valor"
     if metodo == 'register':
     	line = 'REGISTER sip:' + line + ' ' + 'SIP/2.0 200 OK\r\n\r\n' + 'Expires: ' + expires + '\r\n'
     print("Enviando:", line)
