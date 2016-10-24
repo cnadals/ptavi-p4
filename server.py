@@ -16,16 +16,32 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     # creo mi diccionario vacio
     diccionario = {}
 
-    #def json2registered(self):
-
+    def json2registered(self):
+        """
+        Comprobacion existencia fichero
+        """
+        # compruebo si existe un fichero registered.json
+        try:
+            with open('registered.json', 'r') as fichero:
+                self.diccionario = json.load(fichero)
+        except:
+            pass
 
     def register2json(self):
+        """
+        Creacion de fichero
+        """
         # abro y escribo en un fichero llamado registered.json
         # con permiso de escritura
         with open('registered.json', 'w') as fichero:
             json.dump(self.diccionario, fichero)
 
     def handle(self):
+        """
+        Manejador
+        """
+        if len(self.diccionario) == 0:
+            self.json2registered()
         #imprimo IP y PUERTO por pantalla
         print('IP del cliente: ' + self.client_address[0])
         print('PUERTO del cliente: ' + str(self.client_address[1]))
@@ -33,7 +49,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         print('Segundos para EXPIRAR: ' + datos[-1])
         #compruebo si es register. si es, mando OK
         if datos[0] == 'REGISTER':
-            self.diccionario[datos[1]] = self.client_address[0]
+            #self.diccionario[datos[1]] = self.client_address[0]
             direccion = datos[1].split(':')[1]
             # Transformamos la fecha de un formato a otro
             # Mi tiempo de expiracion --> formato
@@ -56,7 +72,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 del self.diccionario[datos[1]]  # Si es = 0 --> fuera.
         print('Almacenado en mi diccionario: ', self.diccionario)
         self.register2json()
-
+        self.json2registered()
 
 if __name__ == "__main__":
 
