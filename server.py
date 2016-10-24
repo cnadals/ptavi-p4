@@ -51,7 +51,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             HoraActual = time.strftime('%Y-%m-%d %H:%M:%S', HoraActual)
             self.diccionario[direccion] = [self.client_address[0], tiempo_exp]
             print('Address: ' + self.client_address[0])
-            print('Fecha y hora actual: ' + HoraActual)    
+            print('Fecha y hora actual: ' + HoraActual)
             print('Expires: ' + tiempo_exp + ' +0000')
             if (tiempo_exp <= HoraActual):
                 del self.diccionario[direccion]
