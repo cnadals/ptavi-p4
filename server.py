@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Clase (y programa princself.client_address[0]al) para un servidor de eco en UDP simple
+Clase (y programa principal) para un servidor de eco en UDP simple
 """
 
 import socketserver
@@ -27,29 +27,32 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         print('IP del cliente: ' + self.client_address[0])
         print('PUERTO del cliente: ' + str(self.client_address[1]))
         datos = self.rfile.read().decode('utf-8').split(' ')
-        print('EXPIRA en ' + datos[-3] + ' segundos.')
+        print('Segundos para EXPIRAR: ' + datos[-1])
         #compruebo si es register. si es, mando OK
         if datos[0] == 'REGISTER':
             self.diccionario[datos[1]] = self.client_address[0]
             direccion = datos[1].split(':')[1]
             # Transformamos la fecha de un formato a otro
+            ####
             time_expires = time.gmtime(time.time() + int(datos[-1]))
             time_expires = time.strftime('%Y-%m-%d %H:%M:%S', time_expires)
             current_time = time.gmtime(time.time())
             current_time = time.strftime('%Y-%m-%d %H:%M:%S', current_time)
             self.diccionario[direccion] = [self.client_address[0], time_expires]
-            print('COMPROBAAAAAAAAAAAAAAAAAAR IP COMPROBANDO:' + self.client_address[0])
-            print('COMPROBAAAAAAAAAAAAAAAAAAAR EXPIRES:' + time_expires)
-            print(time_expires + ('....') + current_time)
+            print('Address:' + self.client_address[0])
+            print('Expires:' + time_expires)
+            #print(time_expires + ('....') + current_time)
             if (time_expires <= current_time):
                 del self.diccionario[direccion]
                 print('Eliminada direccion: ' + direccion)
+            ####
             self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
             if int(datos[-1]) == 0:  # Compruebo si expires = 0.
                 del self.diccionario[datos[1]]  # Si es = 0 --> fuera.
-        print(self.diccionario)
+        print('Almacenado en mi diccionario: ', self.diccionario)
         self.register2json()
 
+   # def registrar(self):
 
 if __name__ == "__main__":
 
