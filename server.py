@@ -32,6 +32,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
         if datos[0] == 'REGISTER':
             self.diccionario[datos[1]] = self.client_address[0]
             direccion = datos[1].split(':')[1]
+            # Transformamos la fecha de un formato a otro
             time_expires = time.gmtime(time.time() + int(datos[-1]))
             time_expires = time.strftime('%Y-%m-%d %H:%M:%S', time_expires)
             current_time = time.gmtime(time.time())
@@ -47,6 +48,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             if int(datos[-1]) == 0:  # Compruebo si expires = 0.
                 del self.diccionario[datos[1]]  # Si es = 0 --> fuera.
         print(self.diccionario)
+        self.register2json()
 
 
 if __name__ == "__main__":
