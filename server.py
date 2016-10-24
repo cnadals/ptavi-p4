@@ -16,6 +16,9 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
     # creo mi diccionario vacio
     diccionario = {}
 
+    #def json2registered(self):
+
+
     def register2json(self):
         # abro y escribo en un fichero llamado registered.json
         # con permiso de escritura
@@ -23,7 +26,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             json.dump(self.diccionario, fichero)
 
     def handle(self):
-        #imprimo self.client_address[0] y PUERTO por pantalla
+        #imprimo IP y PUERTO por pantalla
         print('IP del cliente: ' + self.client_address[0])
         print('PUERTO del cliente: ' + str(self.client_address[1]))
         datos = self.rfile.read().decode('utf-8').split(' ')
@@ -33,26 +36,27 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             self.diccionario[datos[1]] = self.client_address[0]
             direccion = datos[1].split(':')[1]
             # Transformamos la fecha de un formato a otro
-            ####
-            time_expires = time.gmtime(time.time() + int(datos[-1]))
-            time_expires = time.strftime('%Y-%m-%d %H:%M:%S', time_expires)
-            current_time = time.gmtime(time.time())
-            current_time = time.strftime('%Y-%m-%d %H:%M:%S', current_time)
-            self.diccionario[direccion] = [self.client_address[0], time_expires]
-            print('Address:' + self.client_address[0])
-            print('Expires:' + time_expires)
-            #print(time_expires + ('....') + current_time)
-            if (time_expires <= current_time):
+            # Mi tiempo de expiracion --> formato
+            tiempo_exp = time.gmtime(time.time() + int(datos[-1]))
+            tiempo_exp = time.strftime('%Y-%m-%d %H:%M:%S', tiempo_exp)
+            # Tiempo de expiracion --> formato
+            HoraActual = time.gmtime(time.time())
+            HoraActual = time.strftime('%Y-%m-%d %H:%M:%S', HoraActual)
+            self.diccionario[direccion] = [self.client_address[0], tiempo_exp]
+            print('Address: ' + self.client_address[0])
+            print('Fecha y hora actual: ' + HoraActual)    
+            print('Expires: ' + tiempo_exp + ' +0000')
+            # Si tiempo de expiracion es mayor que el que ha pasado, elimino
+            if (tiempo_exp <= HoraActual):
                 del self.diccionario[direccion]
                 print('Eliminada direccion: ' + direccion)
-            ####
+            # Escribo la info en mi fichero
             self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
             if int(datos[-1]) == 0:  # Compruebo si expires = 0.
                 del self.diccionario[datos[1]]  # Si es = 0 --> fuera.
         print('Almacenado en mi diccionario: ', self.diccionario)
         self.register2json()
 
-   # def registrar(self):
 
 if __name__ == "__main__":
 
